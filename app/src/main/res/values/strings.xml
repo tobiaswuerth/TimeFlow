@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">TimeFlow</string>
+    <string name="no_timeflows">No TimeFlows yet. Create one by tapping the + button!</string>
+    <string name="add_timeflow">Add TimeFlow</string>
+    <string name="edit_timeflow">Edit TimeFlow</string>
+    <string name="delete_timeflow">Delete TimeFlow</string>
+    <string name="timeflow_title">Title</string>
+    <string name="from_date">From Date</string>
+    <string name="to_date">To Date</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="app_widget_description">Display your TimeFlow progress on the home screen</string>
 </resources>

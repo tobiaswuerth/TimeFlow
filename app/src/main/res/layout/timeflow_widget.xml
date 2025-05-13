@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:background="@drawable/widget_preview">
+
+    <TextView
+        android:id="@+id/widget_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TimeFlow Title"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="4dp"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/widget_dates"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start - End"
+        android:textSize="12sp"
+        android:textColor="#E0E0E0"
+        android:layout_marginBottom="8dp"
+        android:gravity="center" />
+
+    <ProgressBar
+        android:id="@+id/widget_progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:progress="50" />
+
+    <TextView
+        android:id="@+id/widget_percentage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="50%"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="4dp"
+        android:gravity="center" />
+
+</LinearLayout>
