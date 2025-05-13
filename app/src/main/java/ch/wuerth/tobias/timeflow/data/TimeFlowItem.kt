@@ -18,28 +18,32 @@ data class TimeFlowItem(
         val now = Clock.System.now()
         if (now < fromDateTime) return 0f
         if (now > toDateTime) return 1f
-        
+
         val total = toDateTime.toEpochMilliseconds() - fromDateTime.toEpochMilliseconds()
         val elapsed = now.toEpochMilliseconds() - fromDateTime.toEpochMilliseconds()
-        
+
         return (elapsed.toFloat() / total).coerceIn(0f, 1f)
     }
-    
+
     fun isActive(): Boolean {
         val now = Clock.System.now()
         return now in fromDateTime..toDateTime
     }
-    
+
     fun isPast(): Boolean {
         return Clock.System.now() > toDateTime
     }
-    
+
     fun isFuture(): Boolean {
         return Clock.System.now() < fromDateTime
     }
-    
+
     fun formatDateTime(instant: Instant): String {
         val localDateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
-        return "${localDateTime.date} ${localDateTime.time}"
+        val day = localDateTime.dayOfMonth.toString().padStart(2, '0')
+        val month = localDateTime.monthNumber.toString().padStart(2, '0')
+        return "$day.$month.${
+            localDateTime.year.toString().takeLast(2)
+        }"
     }
 }

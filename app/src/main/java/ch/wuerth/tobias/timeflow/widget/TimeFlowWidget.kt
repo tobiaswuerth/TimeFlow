@@ -12,6 +12,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Instant
+import kotlinx.datetime.Clock
+import kotlinx.datetime.toJavaInstant
+import java.time.temporal.ChronoUnit
+
 class TimeFlowWidgetReceiver : AppWidgetProvider() {
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.IO + job)
@@ -47,17 +52,35 @@ class TimeFlowWidgetReceiver : AppWidgetProvider() {
                 
                 if (selectedTimeFlow != null) {
                     widgetView.setTextViewText(R.id.widget_title, selectedTimeFlow.title)
-                    widgetView.setTextViewText(R.id.widget_dates, 
-                        "${selectedTimeFlow.formatDateTime(selectedTimeFlow.fromDateTime)} - " +
-                        "${selectedTimeFlow.formatDateTime(selectedTimeFlow.toDateTime)}")
+                    widgetView.setTextViewText(R.id.widget_date_from,
+                        selectedTimeFlow.formatDateTime(selectedTimeFlow.fromDateTime)
+                    )
+                    widgetView.setTextViewText(R.id.widget_date_to,
+                        selectedTimeFlow.formatDateTime(selectedTimeFlow.toDateTime)
+                    )
                     
                     // Set progress bar progress (0-100)
                     val progress = (selectedTimeFlow.getProgress() * 100).toInt()
                     widgetView.setProgressBar(R.id.widget_progress, 100, progress, false)
-                    widgetView.setTextViewText(R.id.widget_percentage, "$progress%")
+                    
+                    // Calculate days left
+                    val now = Clock.System.now()
+                    val daysLeft = ChronoUnit.DAYS.between(
+                        now.toJavaInstant(),
+                        selectedTimeFlow.toDateTime.toJavaInstant()
+                    ).toInt()
+                    
+                    // Display percentage and days left
+                    val displayText = if (daysLeft > 0) {
+                        "$progress% (${daysLeft}d left)"
+                    } else {
+                        "$progress%"
+                    }
+                    widgetView.setTextViewText(R.id.widget_percentage, displayText)
                 } else {
                     widgetView.setTextViewText(R.id.widget_title, "No TimeFlow Selected")
-                    widgetView.setTextViewText(R.id.widget_dates, "")
+                    widgetView.setTextViewText(R.id.widget_date_from, "N/A")
+                    widgetView.setTextViewText(R.id.widget_date_to, "N/A")
                     widgetView.setProgressBar(R.id.widget_progress, 100, 0, false)
                     widgetView.setTextViewText(R.id.widget_percentage, "")
                 }
