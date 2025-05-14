@@ -40,7 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ch.wuerth.tobias.timeflow.data.TimeFlowItem
 import ch.wuerth.tobias.timeflow.ui.components.TimeFlowDialog
-import ch.wuerth.tobias.timeflow.ui.components.TimeFlowItemCard
+import ch.wuerth.tobias.timeflow.ui.components.TimeFlowWidgetCard
 import kotlinx.datetime.Instant
 
 @OptIn(
@@ -62,12 +62,18 @@ fun HomeScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("TimeFlow") }
+                title = { Text("TimeFlow") },
+                colors = androidx.compose.material3.TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = androidx.compose.ui.graphics.Color.White
+                )
             )
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { showAddDialog = true }
+                onClick = { showAddDialog = true },
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = androidx.compose.ui.graphics.Color.White
             ) {
                 Icon(Icons.Default.Add, contentDescription = "Add TimeFlow")
             }
@@ -80,7 +86,7 @@ fun HomeScreen(
         ) {
             if (timeFlows.isEmpty()) {
                 Text(
-                    text = "No TimeFlows yet. Create one by tapping the + button!",
+                    text = "No TimeFlows yet.\nCreate one by tapping the + button!",
                     modifier = Modifier.align(Alignment.Center),
                     style = MaterialTheme.typography.bodyLarge
                 )
@@ -117,22 +123,25 @@ fun HomeScreen(
                                 val color = MaterialTheme.colorScheme.error
                                 val alignment = Alignment.CenterEnd
 
-                                Box(
-                                    Modifier
-                                        .fillMaxSize()
-                                        .background(color)
-                                        .padding(horizontal = 20.dp),
-                                    contentAlignment = alignment
-                                ) {
-                                    Icon(
-                                        Icons.Default.Delete,
-                                        contentDescription = "Delete",
-                                        tint = androidx.compose.ui.graphics.Color.White
-                                    )
+                                // Only show the background when actually being dismissed
+                                if (dismissState.dismissDirection != null) {
+                                    Box(
+                                        Modifier
+                                            .fillMaxSize()
+                                            .background(color)
+                                            .padding(horizontal = 20.dp),
+                                        contentAlignment = alignment
+                                    ) {
+                                        Icon(
+                                            Icons.Default.Delete,
+                                            contentDescription = "Delete",
+                                            tint = androidx.compose.ui.graphics.Color.White
+                                        )
+                                    }
                                 }
                             },
                             dismissContent = {
-                                TimeFlowItemCard(
+                                TimeFlowWidgetCard(
                                     timeFlowItem = timeFlow,
                                     onLongClick = { selectedTimeFlow = timeFlow },
                                     modifier = Modifier

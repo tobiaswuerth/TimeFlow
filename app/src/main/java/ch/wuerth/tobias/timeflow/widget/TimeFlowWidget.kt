@@ -32,27 +32,23 @@ class TimeFlowWidgetReceiver : AppWidgetProvider() {
         private const val PREF_PREFIX_KEY = "appwidget_"
         var selectedTimeFlowId: Long = -1
 
-        // Save the timeflow ID for a specific widget
         internal fun saveTimeFlowPref(context: Context, appWidgetId: Int, timeFlowId: Long) {
             context.getSharedPreferences(PREFS_NAME, 0).edit {
                 putLong(PREF_PREFIX_KEY + appWidgetId, timeFlowId)
             }
         }
 
-        // Get the timeflow ID for a specific widget
         internal fun loadTimeFlowPref(context: Context, appWidgetId: Int): Long {
             val prefs = context.getSharedPreferences(PREFS_NAME, 0)
             return prefs.getLong(PREF_PREFIX_KEY + appWidgetId, -1)
         }
 
-        // Delete preferences when widget is removed
         internal fun deleteTimeFlowPref(context: Context, appWidgetId: Int) {
             context.getSharedPreferences(PREFS_NAME, 0).edit {
                 remove(PREF_PREFIX_KEY + appWidgetId)
             }
         }
 
-        // Delete all widgets associated with a specific TimeFlow ID
         internal fun deleteAllWidgetsForTimeFlowId(context: Context, timeFlowId: Long) {
             val appWidgetManager = AppWidgetManager.getInstance(context)
             val appWidgetIds = appWidgetManager.getAppWidgetIds(
@@ -76,7 +72,8 @@ class TimeFlowWidgetReceiver : AppWidgetProvider() {
             // Apply all preference changes
             prefEditor.apply()
 
-            // Update affected widgets
+            // For Android 13+, we can't programmatically remove widgets
+            // Instead, we'll update them to show "No TimeFlow Selected" message
             if (widgetsToUpdate.isNotEmpty()) {
                 val instance = TimeFlowWidgetReceiver()
                 instance.onUpdate(
@@ -184,7 +181,7 @@ class TimeFlowWidgetReceiver : AppWidgetProvider() {
                         setColor(selectedTimeFlow.color)
                     }
 
-                    val backgroundBitmap = createBitmap(100, 100)
+                    val backgroundBitmap = createBitmap(1000, 300)
                     val canvas = Canvas(backgroundBitmap)
                     customBackgroundDrawable.setBounds(0, 0, canvas.width, canvas.height)
                     customBackgroundDrawable.draw(canvas)

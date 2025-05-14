@@ -6,10 +6,6 @@ class TimeFlowRepository(private val timeFlowDao: TimeFlowDao) {
 
     val allTimeFlows: Flow<List<TimeFlowItem>> = timeFlowDao.getAllTimeFlows()
 
-    suspend fun getTimeFlowById(id: Long): TimeFlowItem? {
-        return timeFlowDao.getTimeFlowById(id)
-    }
-
     suspend fun insertTimeFlow(timeFlowItem: TimeFlowItem): Long {
         return timeFlowDao.insertTimeFlow(timeFlowItem)
     }
@@ -18,7 +14,18 @@ class TimeFlowRepository(private val timeFlowDao: TimeFlowDao) {
         timeFlowDao.updateTimeFlow(timeFlowItem)
     }
 
-    suspend fun deleteTimeFlow(timeFlowItem: TimeFlowItem) {
+    suspend fun deleteTimeFlow(
+        timeFlowItem: TimeFlowItem,
+        context: android.content.Context? = null
+    ) {
         timeFlowDao.deleteTimeFlow(timeFlowItem)
+
+        // Remove any widgets associated with this TimeFlow
+        context?.let {
+            ch.wuerth.tobias.timeflow.widget.TimeFlowWidgetReceiver.deleteAllWidgetsForTimeFlowId(
+                it,
+                timeFlowItem.id
+            )
+        }
     }
 }

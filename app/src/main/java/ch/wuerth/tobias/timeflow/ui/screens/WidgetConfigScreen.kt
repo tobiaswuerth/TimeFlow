@@ -22,7 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ch.wuerth.tobias.timeflow.data.TimeFlowItem
-import ch.wuerth.tobias.timeflow.ui.components.TimeFlowItemCard
+import ch.wuerth.tobias.timeflow.ui.components.TimeFlowWidgetCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,7 +63,7 @@ fun WidgetConfigScreen(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     items(timeFlows) { timeFlow ->
-                        TimeFlowItemCard(
+                        TimeFlowWidgetCard(
                             timeFlowItem = timeFlow,
                             onLongClick = { },
                             modifier = Modifier

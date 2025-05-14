@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import ch.wuerth.tobias.timeflow.data.TimeFlowItem
 import ch.wuerth.tobias.timeflow.data.TimeFlowRepository
-import ch.wuerth.tobias.timeflow.widget.TimeFlowWidgetReceiver
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -44,13 +43,11 @@ class TimeFlowViewModel(
     }
 
     fun deleteTimeFlow(timeFlowItem: TimeFlowItem) {
-        // Remove widgets associated with this TimeFlow first
         val context = getApplication<Application>().applicationContext
-        TimeFlowWidgetReceiver.deleteAllWidgetsForTimeFlowId(context, timeFlowItem.id)
 
-        // Then delete the TimeFlow from database
+        // Delete the TimeFlow from database and update widgets in one operation
         viewModelScope.launch {
-            repository.deleteTimeFlow(timeFlowItem)
+            repository.deleteTimeFlow(timeFlowItem, context)
         }
     }
 

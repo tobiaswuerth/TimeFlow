@@ -35,10 +35,6 @@ data class TimeFlowItem(
         return Clock.System.now() > toDateTime
     }
 
-    fun isFuture(): Boolean {
-        return Clock.System.now() < fromDateTime
-    }
-
     fun formatDateTime(instant: Instant): String {
         val localDateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
         val day = localDateTime.dayOfMonth.toString().padStart(2, '0')
