@@ -134,7 +134,7 @@ fun TimeFlowWidgetCard(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(8.dp),
+            .padding(0.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color(timeFlowItem.color).copy(
