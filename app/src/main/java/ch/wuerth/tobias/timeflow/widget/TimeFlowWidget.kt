@@ -197,7 +197,7 @@ class TimeFlowWidgetReceiver : AppWidgetProvider() {
 
                 // Update the widget
                 appWidgetManager.updateAppWidget(appWidgetId, widgetView)
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 // If there's an error, update with default view
                 appWidgetManager.updateAppWidget(appWidgetId, views)
             }

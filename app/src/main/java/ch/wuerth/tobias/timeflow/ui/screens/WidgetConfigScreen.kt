@@ -65,7 +65,6 @@ fun WidgetConfigScreen(
                     items(timeFlows) { timeFlow ->
                         TimeFlowWidgetCard(
                             timeFlowItem = timeFlow,
-                            onLongClick = { },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable { onTimeFlowSelected(timeFlow) }

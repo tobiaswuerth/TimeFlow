@@ -150,7 +150,6 @@ fun HomeScreen(
                             dismissContent = {
                                 TimeFlowWidgetCard(
                                     timeFlowItem = timeFlow,
-                                    onLongClick = { selectedTimeFlow = timeFlow },
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .combinedClickable(
