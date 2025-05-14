@@ -43,8 +43,14 @@ class TimeFlowWidgetConfigActivity : ComponentActivity() {
                     
                     WidgetConfigScreen(
                         timeFlows = timeFlows,                        onTimeFlowSelected = { selectedTimeFlow ->
-                            // Save the selected TimeFlow ID for the widget
+                            // Save the selected TimeFlow ID for the widget in SharedPreferences
                             TimeFlowWidgetReceiver.selectedTimeFlowId = selectedTimeFlow.id
+                            TimeFlowWidgetReceiver.saveTimeFlowPref(
+                                this@TimeFlowWidgetConfigActivity,
+                                appWidgetId,
+                                selectedTimeFlow.id
+                            )
+                            
                             // Request a widget update
                             val appWidgetManager = AppWidgetManager.getInstance(this)
                             

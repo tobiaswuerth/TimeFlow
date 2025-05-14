@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.graphics.Color
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.LinearProgressIndicator
@@ -32,21 +33,20 @@ fun TimeFlowItemCard(
     val toDateTime = remember(timeFlowItem) {
         timeFlowItem.toDateTime.toLocalDateTime(TimeZone.currentSystemDefault())
     }
-    
     Card(
         modifier = modifier
             .fillMaxWidth()
             .padding(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        colors = when {
-            timeFlowItem.isActive() -> CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer
+        colors = CardDefaults.cardColors(
+            containerColor = Color(timeFlowItem.color).copy(
+                alpha = when {
+                    timeFlowItem.isActive() -> 1.0f
+                    timeFlowItem.isPast() -> 0.6f
+                    else -> 0.8f
+                }
             )
-            timeFlowItem.isPast() -> CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant
-            )
-            else -> CardDefaults.cardColors()
-        }
+        )
     ) {
         Column(
             modifier = Modifier
@@ -59,31 +59,31 @@ fun TimeFlowItemCard(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
-            
+
             Spacer(modifier = Modifier.height(8.dp))
-            
+
             Text(
                 text = "From: ${fromDateTime.date} ${fromDateTime.time}",
                 style = MaterialTheme.typography.bodyMedium
             )
-            
+
             Spacer(modifier = Modifier.height(4.dp))
-            
+
             Text(
                 text = "To: ${toDateTime.date} ${toDateTime.time}",
                 style = MaterialTheme.typography.bodyMedium
             )
-            
+
             Spacer(modifier = Modifier.height(16.dp))
-            
+
             LinearProgressIndicator(
-                progress = progress,
+                progress = { progress },
                 modifier = Modifier.fillMaxWidth(),
-                trackColor = MaterialTheme.colorScheme.surfaceVariant,
                 color = when {
                     timeFlowItem.isPast() -> MaterialTheme.colorScheme.outline
                     else -> MaterialTheme.colorScheme.primary
-                }
+                },
+                trackColor = MaterialTheme.colorScheme.surfaceVariant,
             )
         }
     }

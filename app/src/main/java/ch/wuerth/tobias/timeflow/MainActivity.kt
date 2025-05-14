@@ -29,15 +29,15 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val timeFlowViewModel: TimeFlowViewModel = viewModel(
-                        factory = TimeFlowViewModel.TimeFlowViewModelFactory(repository)
+                        factory = TimeFlowViewModel.TimeFlowViewModelFactory(application, repository)
                     )
                     
                     val timeFlows by timeFlowViewModel.allTimeFlows.collectAsState()
                     
                     HomeScreen(
                         timeFlows = timeFlows,
-                        onAddTimeFlow = { title, fromDateTime, toDateTime ->
-                            timeFlowViewModel.insertTimeFlow(title, fromDateTime, toDateTime)
+                        onAddTimeFlow = { title, fromDateTime, toDateTime, color ->
+                            timeFlowViewModel.insertTimeFlow(title, fromDateTime, toDateTime, color)
                         },
                         onEditTimeFlow = { timeFlowItem ->
                             timeFlowViewModel.updateTimeFlow(timeFlowItem)

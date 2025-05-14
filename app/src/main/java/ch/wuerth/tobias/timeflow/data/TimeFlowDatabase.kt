@@ -25,7 +25,7 @@ abstract class TimeFlowDatabase : RoomDatabase() {
                     TimeFlowDatabase::class.java,
                     "timeflow_database"
                 )
-                .fallbackToDestructiveMigration()
+                    .fallbackToDestructiveMigration(false)
                 .build()
                 INSTANCE = instance
                 instance

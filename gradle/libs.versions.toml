@@ -9,6 +9,7 @@ lifecycleRuntimeKtx = "2.9.0"
 lifecycleViewmodelCompose = "2.9.0"
 activityCompose = "1.10.1"
 composeBom = "2025.05.00"
+material = "1.8.1"
 material3 = "X.Y.Z"
 room = "2.7.1"
 kotlinxDatetime = "0.5.0"
@@ -17,6 +18,7 @@ roomCompiler = "2.5.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-material = { module = "androidx.compose.material:material", version.ref = "material" }
 androidx-room-compiler-v250 = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
