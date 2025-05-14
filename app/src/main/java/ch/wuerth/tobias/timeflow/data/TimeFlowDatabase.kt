@@ -11,13 +11,13 @@ import kotlinx.datetime.Instant
 @Database(entities = [TimeFlowItem::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class TimeFlowDatabase : RoomDatabase() {
-    
+
     abstract fun timeFlowDao(): TimeFlowDao
-    
+
     companion object {
         @Volatile
         private var INSTANCE: TimeFlowDatabase? = null
-        
+
         fun getDatabase(context: Context): TimeFlowDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
@@ -26,7 +26,7 @@ abstract class TimeFlowDatabase : RoomDatabase() {
                     "timeflow_database"
                 )
                     .fallbackToDestructiveMigration(false)
-                .build()
+                    .build()
                 INSTANCE = instance
                 instance
             }
@@ -39,7 +39,7 @@ class Converters {
     fun fromTimestamp(value: Long?): Instant? {
         return value?.let { Instant.fromEpochMilliseconds(it) }
     }
-    
+
     @TypeConverter
     fun dateToTimestamp(instant: Instant?): Long? {
         return instant?.toEpochMilliseconds()

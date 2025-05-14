@@ -19,30 +19,30 @@ class TimeFlowWidgetConfigActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
+
         // Set the result to CANCELED in case the user backs out
         setResult(RESULT_CANCELED)
-        
+
         // Get the widget ID from the intent
         appWidgetId = intent?.extras?.getInt(
             AppWidgetManager.EXTRA_APPWIDGET_ID,
             AppWidgetManager.INVALID_APPWIDGET_ID
         ) ?: AppWidgetManager.INVALID_APPWIDGET_ID
-        
+
         if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
             finish()
             return
         }
-        
+
         val repository = (application as TimeFlowApplication).repository
-        
+
         setContent {
             TimeFlowTheme {
                 Surface(color = MaterialTheme.colorScheme.background) {
                     val timeFlows by repository.allTimeFlows.collectAsState(initial = emptyList())
-                    
+
                     WidgetConfigScreen(
-                        timeFlows = timeFlows,                        onTimeFlowSelected = { selectedTimeFlow ->
+                        timeFlows = timeFlows, onTimeFlowSelected = { selectedTimeFlow ->
                             // Save the selected TimeFlow ID for the widget in SharedPreferences
                             TimeFlowWidgetReceiver.selectedTimeFlowId = selectedTimeFlow.id
                             TimeFlowWidgetReceiver.saveTimeFlowPref(
@@ -50,10 +50,10 @@ class TimeFlowWidgetConfigActivity : ComponentActivity() {
                                 appWidgetId,
                                 selectedTimeFlow.id
                             )
-                            
+
                             // Request a widget update
                             val appWidgetManager = AppWidgetManager.getInstance(this)
-                            
+
                             // Trigger a widget update
                             val widgetProvider = TimeFlowWidgetReceiver()
                             widgetProvider.onUpdate(
@@ -61,7 +61,7 @@ class TimeFlowWidgetConfigActivity : ComponentActivity() {
                                 appWidgetManager,
                                 intArrayOf(appWidgetId)
                             )
-                            
+
                             // Set the result and finish
                             val resultValue = Intent().apply {
                                 putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)

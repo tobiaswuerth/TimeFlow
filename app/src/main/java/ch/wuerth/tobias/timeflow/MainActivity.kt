@@ -19,9 +19,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        
+
         val repository = (application as TimeFlowApplication).repository
-        
+
         setContent {
             TimeFlowTheme {
                 Surface(
@@ -29,11 +29,14 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val timeFlowViewModel: TimeFlowViewModel = viewModel(
-                        factory = TimeFlowViewModel.TimeFlowViewModelFactory(application, repository)
+                        factory = TimeFlowViewModel.TimeFlowViewModelFactory(
+                            application,
+                            repository
+                        )
                     )
-                    
+
                     val timeFlows by timeFlowViewModel.allTimeFlows.collectAsState()
-                    
+
                     HomeScreen(
                         timeFlows = timeFlows,
                         onAddTimeFlow = { title, fromDateTime, toDateTime, color ->

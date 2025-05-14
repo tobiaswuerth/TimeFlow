@@ -14,7 +14,7 @@ data class TimeFlowItem(
     val fromDateTime: Instant,
     val toDateTime: Instant,
     val color: Int = 0xFF3F51B5.toInt() // Default color from widget_preview.xml
-){
+) {
     fun getProgress(): Float {
         val now = Clock.System.now()
         if (now < fromDateTime) return 0f

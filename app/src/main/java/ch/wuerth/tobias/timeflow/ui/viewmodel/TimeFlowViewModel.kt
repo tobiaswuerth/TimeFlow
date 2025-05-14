@@ -1,7 +1,6 @@
 package ch.wuerth.tobias.timeflow.ui.viewmodel
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -13,20 +12,20 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
 class TimeFlowViewModel(
     application: Application,
     private val repository: TimeFlowRepository
 ) : AndroidViewModel(application) {
-    
+
     val allTimeFlows: StateFlow<List<TimeFlowItem>> = repository.allTimeFlows.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5000),
         emptyList()
     )
-      fun insertTimeFlow(title: String, fromDateTime: Instant, toDateTime: Instant, color: Int) {
+
+    fun insertTimeFlow(title: String, fromDateTime: Instant, toDateTime: Instant, color: Int) {
         val timeFlowItem = TimeFlowItem(
             title = title,
             fromDateTime = fromDateTime,
@@ -37,23 +36,25 @@ class TimeFlowViewModel(
             repository.insertTimeFlow(timeFlowItem)
         }
     }
-    
+
     fun updateTimeFlow(timeFlowItem: TimeFlowItem) {
         viewModelScope.launch {
             repository.updateTimeFlow(timeFlowItem)
         }
     }
-      fun deleteTimeFlow(timeFlowItem: TimeFlowItem) {
+
+    fun deleteTimeFlow(timeFlowItem: TimeFlowItem) {
         // Remove widgets associated with this TimeFlow first
         val context = getApplication<Application>().applicationContext
         TimeFlowWidgetReceiver.deleteAllWidgetsForTimeFlowId(context, timeFlowItem.id)
-        
+
         // Then delete the TimeFlow from database
         viewModelScope.launch {
             repository.deleteTimeFlow(timeFlowItem)
         }
     }
-      class TimeFlowViewModelFactory(
+
+    class TimeFlowViewModelFactory(
         private val application: Application,
         private val repository: TimeFlowRepository
     ) : ViewModelProvider.Factory {

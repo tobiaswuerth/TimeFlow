@@ -44,7 +44,7 @@ import ch.wuerth.tobias.timeflow.ui.components.TimeFlowItemCard
 import kotlinx.datetime.Instant
 
 @OptIn(
-    ExperimentalMaterial3Api::class, 
+    ExperimentalMaterial3Api::class,
     ExperimentalFoundationApi::class,
     androidx.compose.material.ExperimentalMaterialApi::class
 )
@@ -54,11 +54,11 @@ fun HomeScreen(
     onAddTimeFlow: (String, Instant, Instant, Int) -> Unit,
     onEditTimeFlow: (TimeFlowItem) -> Unit,
     onDeleteTimeFlow: (TimeFlowItem) -> Unit
-){
+) {
     var showAddDialog by remember { mutableStateOf(false) }
     var selectedTimeFlow by remember { mutableStateOf<TimeFlowItem?>(null) }
     rememberCoroutineScope()
-    
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -88,13 +88,16 @@ fun HomeScreen(
                 LazyColumn(
                     contentPadding = PaddingValues(16.dp),
                     modifier = Modifier.fillMaxSize()
-                ) {                    items(
+                ) {
+                    items(
                         items = timeFlows,
                         key = { it.id }
-                    ) { timeFlow ->                        val dismissState = rememberDismissState(
+                    ) { timeFlow ->
+                        val dismissState = rememberDismissState(
                             confirmStateChange = { dismissValue ->
-                                if (dismissValue == DismissValue.DismissedToStart || 
-                                    dismissValue == DismissValue.DismissedToEnd) {
+                                if (dismissValue == DismissValue.DismissedToStart ||
+                                    dismissValue == DismissValue.DismissedToEnd
+                                ) {
                                     // Delete the item when fully swiped
                                     onDeleteTimeFlow(timeFlow)
                                     true
@@ -103,14 +106,17 @@ fun HomeScreen(
                                 }
                             }
                         )
-                        
+
                         SwipeToDismiss(
                             state = dismissState,
-                            directions = setOf(DismissDirection.StartToEnd, DismissDirection.EndToStart),
+                            directions = setOf(
+                                DismissDirection.StartToEnd,
+                                DismissDirection.EndToStart
+                            ),
                             background = {
                                 val color = MaterialTheme.colorScheme.error
                                 val alignment = Alignment.CenterEnd
-                                
+
                                 Box(
                                     Modifier
                                         .fillMaxSize()
@@ -118,7 +124,8 @@ fun HomeScreen(
                                         .padding(horizontal = 20.dp),
                                     contentAlignment = alignment
                                 ) {
-                                    Icon(                                        Icons.Default.Delete,
+                                    Icon(
+                                        Icons.Default.Delete,
                                         contentDescription = "Delete",
                                         tint = androidx.compose.ui.graphics.Color.White
                                     )
@@ -143,7 +150,7 @@ fun HomeScreen(
             }
         }
     }
-      // Add Dialog
+    // Add Dialog
     AnimatedVisibility(
         visible = showAddDialog,
         enter = fadeIn() + slideInVertically(),
@@ -154,7 +161,7 @@ fun HomeScreen(
             onConfirm = onAddTimeFlow
         )
     }
-    
+
     // Edit Dialog
     AnimatedVisibility(
         visible = selectedTimeFlow != null,

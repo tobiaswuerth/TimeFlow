@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.DatePicker
@@ -28,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -35,12 +34,10 @@ import androidx.compose.ui.window.Dialog
 import ch.wuerth.tobias.timeflow.data.TimeFlowItem
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atTime
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
-import java.time.ZoneOffset
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,28 +52,28 @@ fun TimeFlowDialog(
             timeFlowItem?.fromDateTime ?: Clock.System.now()
         )
     }
-    
-    var toDateTime by remember { 
+
+    var toDateTime by remember {
         mutableStateOf(
             timeFlowItem?.toDateTime ?: Clock.System.now().plus(kotlin.time.Duration.parse("24h"))
         )
     }
-    
+
     var selectedColor by remember {
         mutableStateOf(timeFlowItem?.color ?: 0xFF3F51B5.toInt())
     }
-    
+
     // Keep track of focused field to prevent auto-focusing title after date/time selection
     var focusedField by remember { mutableStateOf<String?>(null) }
-    
+
     var showFromDatePicker by remember { mutableStateOf(false) }
     var showFromTimePicker by remember { mutableStateOf(false) }
     var showToDatePicker by remember { mutableStateOf(false) }
     var showToTimePicker by remember { mutableStateOf(false) }
-    
+
     val fromLocal = fromDateTime.toLocalDateTime(TimeZone.currentSystemDefault())
     val toLocal = toDateTime.toLocalDateTime(TimeZone.currentSystemDefault())
-    
+
     Dialog(onDismissRequest = onDismiss) {
         Card(
             modifier = Modifier
@@ -93,7 +90,7 @@ fun TimeFlowDialog(
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
-                
+
                 Spacer(modifier = Modifier.height(16.dp))
                 OutlinedTextField(
                     value = title,
@@ -111,46 +108,50 @@ fun TimeFlowDialog(
                         keyboardType = KeyboardType.Text
                     )
                 )
-                
+
                 Spacer(modifier = Modifier.height(16.dp))
-                  // From Date & Time
+                // From Date & Time
                 Text(text = "From Date & Time")
-                
+
                 Button(
                     onClick = { showFromDatePicker = true },
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = "${fromLocal.date} ${fromLocal.time.hour.toString().padStart(2, '0')}:${fromLocal.time.minute.toString().padStart(2, '0')}",
+                        text = "${fromLocal.date} ${
+                            fromLocal.time.hour.toString().padStart(2, '0')
+                        }:${fromLocal.time.minute.toString().padStart(2, '0')}",
                         modifier = Modifier.padding(8.dp)
                     )
                 }
-                
+
                 Spacer(modifier = Modifier.height(16.dp))
-                
+
                 // To Date & Time
                 Text(text = "To Date & Time")
-                
+
                 Button(
                     onClick = { showToDatePicker = true },
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = "${toLocal.date} ${toLocal.time.hour.toString().padStart(2, '0')}:${toLocal.time.minute.toString().padStart(2, '0')}",
+                        text = "${toLocal.date} ${
+                            toLocal.time.hour.toString().padStart(2, '0')
+                        }:${toLocal.time.minute.toString().padStart(2, '0')}",
                         modifier = Modifier.padding(8.dp)
                     )
                 }
-                  Spacer(modifier = Modifier.height(16.dp))
-                
+                Spacer(modifier = Modifier.height(16.dp))
+
                 // Color picker
                 ColorPicker(
                     selectedColor = selectedColor,
                     onColorSelected = { selectedColor = it },
                     modifier = Modifier.fillMaxWidth()
                 )
-                
+
                 Spacer(modifier = Modifier.height(24.dp))
-                
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
@@ -158,7 +159,7 @@ fun TimeFlowDialog(
                     TextButton(onClick = onDismiss) {
                         Text("Cancel")
                     }
-                    
+
                     TextButton(
                         onClick = {
                             if (title.isNotBlank() && fromDateTime < toDateTime) {
@@ -173,19 +174,20 @@ fun TimeFlowDialog(
             }
         }
     }
-    
+
     // Date & Time Pickers
     if (showFromDatePicker) {
         val fromLocalDate = fromLocal.date
         val datePickerState = rememberDatePickerState(
             initialSelectedDateMillis = fromLocalDate.toEpochMilliseconds()
         )
-        
+
         DatePickerDialog(
             onDismissRequest = { showFromDatePicker = false },
             confirmButton = {
                 TextButton(
-                    onClick = {                        datePickerState.selectedDateMillis?.let {
+                    onClick = {
+                        datePickerState.selectedDateMillis?.let {
                             val newDate = Instant.fromEpochMilliseconds(it)
                                 .toLocalDateTime(TimeZone.currentSystemDefault()).date
                             val newDateTime = newDate.atTime(fromLocal.time)
@@ -208,12 +210,12 @@ fun TimeFlowDialog(
             DatePicker(state = datePickerState)
         }
     }
-      if (showFromTimePicker) {
+    if (showFromTimePicker) {
         val timePickerState = rememberTimePickerState(
             initialHour = fromLocal.time.hour,
             initialMinute = fromLocal.time.minute
         )
-        
+
         Dialog(onDismissRequest = { showFromTimePicker = false }) {
             Card {
                 Column(
@@ -224,7 +226,7 @@ fun TimeFlowDialog(
                         state = timePickerState,
                         modifier = Modifier.padding(16.dp)
                     )
-                    
+
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End
@@ -232,7 +234,7 @@ fun TimeFlowDialog(
                         TextButton(onClick = { showFromTimePicker = false }) {
                             Text("Cancel")
                         }
-                        
+
                         TextButton(
                             onClick = {
                                 // Use remember for this calculation to improve performance                                // Use remember for this calculation to improve performance
@@ -253,18 +255,19 @@ fun TimeFlowDialog(
             }
         }
     }
-    
+
     if (showToDatePicker) {
         val toLocalDate = toLocal.date
         val datePickerState = rememberDatePickerState(
             initialSelectedDateMillis = toLocalDate.toEpochMilliseconds()
         )
-        
+
         DatePickerDialog(
             onDismissRequest = { showToDatePicker = false },
             confirmButton = {
                 TextButton(
-                    onClick = {                        datePickerState.selectedDateMillis?.let {
+                    onClick = {
+                        datePickerState.selectedDateMillis?.let {
                             val newDate = Instant.fromEpochMilliseconds(it)
                                 .toLocalDateTime(TimeZone.currentSystemDefault()).date
                             val newDateTime = newDate.atTime(toLocal.time)
@@ -287,12 +290,12 @@ fun TimeFlowDialog(
             DatePicker(state = datePickerState)
         }
     }
-      if (showToTimePicker) {
+    if (showToTimePicker) {
         val timePickerState = rememberTimePickerState(
             initialHour = toLocal.time.hour,
             initialMinute = toLocal.time.minute
         )
-        
+
         Dialog(onDismissRequest = { showToTimePicker = false }) {
             Card {
                 Column(
@@ -303,7 +306,7 @@ fun TimeFlowDialog(
                         state = timePickerState,
                         modifier = Modifier.padding(16.dp)
                     )
-                    
+
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End
@@ -311,9 +314,10 @@ fun TimeFlowDialog(
                         TextButton(onClick = { showToTimePicker = false }) {
                             Text("Cancel")
                         }
-                        
+
                         TextButton(
-                            onClick = {                                val newTime = toLocal.date.atTime(
+                            onClick = {
+                                val newTime = toLocal.date.atTime(
                                     hour = timePickerState.hour,
                                     minute = timePickerState.minute
                                 ).toInstant(TimeZone.currentSystemDefault())

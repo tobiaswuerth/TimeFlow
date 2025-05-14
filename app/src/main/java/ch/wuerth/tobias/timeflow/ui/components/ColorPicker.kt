@@ -3,7 +3,15 @@ package ch.wuerth.tobias.timeflow.ui.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -47,7 +55,7 @@ fun ColorPicker(
 ) {
     Column(modifier = modifier) {
         Text("Select color:", Modifier.padding(bottom = 8.dp))
-        
+
         LazyVerticalGrid(
             columns = GridCells.Fixed(4),
             contentPadding = PaddingValues(4.dp)
@@ -60,9 +68,9 @@ fun ColorPicker(
                 )
             }
         }
-        
+
         Spacer(modifier = Modifier.height(8.dp))
-        
+
         // Preview of selected color
         Row(
             modifier = Modifier
@@ -77,7 +85,7 @@ fun ColorPicker(
                     .background(Color(selectedColor))
                     .border(2.dp, Color.LightGray, CircleShape)
             )
-            
+
             Text(
                 text = "Selected color",
                 modifier = Modifier.padding(start = 16.dp)
