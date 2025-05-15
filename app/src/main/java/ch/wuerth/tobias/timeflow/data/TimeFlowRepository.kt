@@ -15,17 +15,8 @@ class TimeFlowRepository(private val timeFlowDao: TimeFlowDao) {
     }
 
     suspend fun deleteTimeFlow(
-        timeFlowItem: TimeFlowItem,
-        context: android.content.Context? = null
+        timeFlowItem: TimeFlowItem
     ) {
         timeFlowDao.deleteTimeFlow(timeFlowItem)
-
-        // Remove any widgets associated with this TimeFlow
-        context?.let {
-            ch.wuerth.tobias.timeflow.widget.TimeFlowWidgetReceiver.deleteAllWidgetsForTimeFlowId(
-                it,
-                timeFlowItem.id
-            )
-        }
     }
 }

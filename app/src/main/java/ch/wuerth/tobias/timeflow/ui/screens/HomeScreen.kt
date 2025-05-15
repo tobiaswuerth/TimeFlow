@@ -55,7 +55,7 @@ import kotlinx.datetime.Instant
 @Composable
 fun HomeScreen(
     timeFlows: List<TimeFlowItem>,
-    onAddTimeFlow: (String, Instant, Instant, Int) -> Unit,
+    onAddTimeFlow: (String, Instant, Instant) -> Unit,
     onEditTimeFlow: (TimeFlowItem) -> Unit,
     onDeleteTimeFlow: (TimeFlowItem) -> Unit
 ) {
@@ -186,12 +186,11 @@ fun HomeScreen(
             TimeFlowDialog(
                 timeFlowItem = timeFlow,
                 onDismiss = { selectedTimeFlow = null },
-                onConfirm = { title, fromDateTime, toDateTime, color ->
+                onConfirm = { title, fromDateTime, toDateTime ->
                     val updatedTimeFlow = timeFlow.copy(
                         title = title,
                         fromDateTime = fromDateTime,
-                        toDateTime = toDateTime,
-                        color = color
+                        toDateTime = toDateTime
                     )
                     onEditTimeFlow(updatedTimeFlow)
                 }

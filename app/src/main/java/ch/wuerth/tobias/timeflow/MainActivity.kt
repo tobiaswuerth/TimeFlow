@@ -39,8 +39,8 @@ class MainActivity : ComponentActivity() {
 
                     HomeScreen(
                         timeFlows = timeFlows,
-                        onAddTimeFlow = { title, fromDateTime, toDateTime, color ->
-                            timeFlowViewModel.insertTimeFlow(title, fromDateTime, toDateTime, color)
+                        onAddTimeFlow = { title, fromDateTime, toDateTime ->
+                            timeFlowViewModel.insertTimeFlow(title, fromDateTime, toDateTime)
                         },
                         onEditTimeFlow = { timeFlowItem ->
                             timeFlowViewModel.updateTimeFlow(timeFlowItem)

@@ -4,15 +4,15 @@
         <shape android:shape="rectangle">
             <corners android:radius="8dp" />
             <solid android:color="#4F4F4F" />
-            <size android:height="24dp" />
+            <size android:height="16dp" />
         </shape>
     </item>
     <item android:id="@android:id/progress">
         <clip>
             <shape android:shape="rectangle">
                 <corners android:radius="6dp" />
-                <solid android:color="#BDBDBD" />
-                <size android:height="20dp" />
+                <solid android:color="#838383" />
+                <size android:height="12dp" />
             </shape>
         </clip>
     </item>

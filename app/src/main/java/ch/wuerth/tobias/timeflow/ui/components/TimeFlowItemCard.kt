@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -27,9 +26,6 @@ import kotlinx.datetime.toJavaInstant
 import kotlinx.datetime.toLocalDateTime
 import java.time.temporal.ChronoUnit
 
-/**
- * A composable that matches the appearance of the TimeFlow widget
- */
 @Composable
 fun TimeFlowWidgetCard(
     timeFlowItem: TimeFlowItem,
@@ -67,15 +63,6 @@ fun TimeFlowWidgetCard(
             .fillMaxWidth()
             .padding(0.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(timeFlowItem.color).copy(
-                alpha = when {
-                    timeFlowItem.isActive() -> 1.0f
-                    timeFlowItem.isPast() -> 0.6f
-                    else -> 0.8f
-                }
-            )
-        )
     ) {
         Column(
             modifier = Modifier

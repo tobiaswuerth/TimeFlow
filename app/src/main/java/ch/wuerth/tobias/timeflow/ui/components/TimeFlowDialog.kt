@@ -44,7 +44,7 @@ import kotlinx.datetime.toLocalDateTime
 fun TimeFlowDialog(
     timeFlowItem: TimeFlowItem? = null,
     onDismiss: () -> Unit,
-    onConfirm: (String, Instant, Instant, Int) -> Unit
+    onConfirm: (String, Instant, Instant) -> Unit
 ) {
     var title by remember { mutableStateOf(timeFlowItem?.title ?: "") }
     var fromDateTime by remember {
@@ -57,10 +57,6 @@ fun TimeFlowDialog(
         mutableStateOf(
             timeFlowItem?.toDateTime ?: Clock.System.now().plus(kotlin.time.Duration.parse("24h"))
         )
-    }
-
-    var selectedColor by remember {
-        mutableStateOf(timeFlowItem?.color ?: 0xFF3F51B5.toInt())
     }
 
     // Keep track of focused field to prevent auto-focusing title after date/time selection
@@ -143,15 +139,6 @@ fun TimeFlowDialog(
                 }
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Color picker
-                ColorPicker(
-                    selectedColor = selectedColor,
-                    onColorSelected = { selectedColor = it },
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                Spacer(modifier = Modifier.height(24.dp))
-
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
@@ -163,7 +150,7 @@ fun TimeFlowDialog(
                     TextButton(
                         onClick = {
                             if (title.isNotBlank() && fromDateTime < toDateTime) {
-                                onConfirm(title, fromDateTime, toDateTime, selectedColor)
+                                onConfirm(title, fromDateTime, toDateTime)
                                 onDismiss()
                             }
                         }
@@ -237,7 +224,6 @@ fun TimeFlowDialog(
 
                         TextButton(
                             onClick = {
-                                // Use remember for this calculation to improve performance                                // Use remember for this calculation to improve performance
                                 val newTime = fromLocal.date.atTime(
                                     hour = timePickerState.hour,
                                     minute = timePickerState.minute

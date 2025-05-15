@@ -24,12 +24,11 @@ class TimeFlowViewModel(
         emptyList()
     )
 
-    fun insertTimeFlow(title: String, fromDateTime: Instant, toDateTime: Instant, color: Int) {
+    fun insertTimeFlow(title: String, fromDateTime: Instant, toDateTime: Instant) {
         val timeFlowItem = TimeFlowItem(
             title = title,
             fromDateTime = fromDateTime,
-            toDateTime = toDateTime,
-            color = color
+            toDateTime = toDateTime
         )
         viewModelScope.launch {
             repository.insertTimeFlow(timeFlowItem)
@@ -43,11 +42,8 @@ class TimeFlowViewModel(
     }
 
     fun deleteTimeFlow(timeFlowItem: TimeFlowItem) {
-        val context = getApplication<Application>().applicationContext
-
-        // Delete the TimeFlow from database and update widgets in one operation
         viewModelScope.launch {
-            repository.deleteTimeFlow(timeFlowItem, context)
+            repository.deleteTimeFlow(timeFlowItem)
         }
     }
 
