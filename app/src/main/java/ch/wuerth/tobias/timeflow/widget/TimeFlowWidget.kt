@@ -146,33 +146,33 @@ class TimeFlowWidgetReceiver : AppWidgetProvider() {
                 widgetView.setOnClickPendingIntent(R.id.widget_root_layout, pendingIntent)
                 if (selectedTimeFlow != null) {
                     widgetView.setTextViewText(R.id.widget_title, selectedTimeFlow.title)
-                    widgetView.setTextViewText(
-                        R.id.widget_date_from,
-                        selectedTimeFlow.formatDateTime(selectedTimeFlow.fromDateTime)
-                    )
-                    widgetView.setTextViewText(
-                        R.id.widget_date_to,
-                        selectedTimeFlow.formatDateTime(selectedTimeFlow.toDateTime)
-                    )
 
                     // Set progress bar progress (0-100)
                     val progress = (selectedTimeFlow.getProgress() * 100).toInt()
-                    widgetView.setProgressBar(R.id.widget_progress, 100, progress, false)
-
-                    // Calculate days left
+                    widgetView.setProgressBar(
+                        R.id.widget_progress,
+                        100,
+                        progress,
+                        false
+                    )                    // Calculate days left
                     val now = Clock.System.now()
                     val daysLeft = ChronoUnit.DAYS.between(
                         now.toJavaInstant(),
                         selectedTimeFlow.toDateTime.toJavaInstant()
                     ).toInt()
 
-                    // Display percentage and days left
-                    val displayText = if (daysLeft > 0) {
-                        "$progress% (${daysLeft}d left)"
+                    // Display percentage and days left separately
+                    widgetView.setTextViewText(R.id.widget_percentage, "$progress%")
+
+                    // Set days left text
+                    val daysLeftText = if (daysLeft > 0) {
+                        "${daysLeft}d left"
+                    } else if (daysLeft == 0) {
+                        "Today"
                     } else {
-                        "$progress%"
+                        "done"
                     }
-                    widgetView.setTextViewText(R.id.widget_percentage, displayText)
+                    widgetView.setTextViewText(R.id.widget_days_left, daysLeftText)
 
                     // Set custom background color
                     val customBackgroundDrawable = GradientDrawable().apply {
@@ -189,10 +189,9 @@ class TimeFlowWidgetReceiver : AppWidgetProvider() {
                     widgetView.setImageViewBitmap(R.id.widget_background, backgroundBitmap)
                 } else {
                     widgetView.setTextViewText(R.id.widget_title, "No TimeFlow Selected")
-                    widgetView.setTextViewText(R.id.widget_date_from, "N/A")
-                    widgetView.setTextViewText(R.id.widget_date_to, "N/A")
                     widgetView.setProgressBar(R.id.widget_progress, 100, 0, false)
                     widgetView.setTextViewText(R.id.widget_percentage, "")
+                    widgetView.setTextViewText(R.id.widget_days_left, "")
                 }
 
                 // Update the widget
