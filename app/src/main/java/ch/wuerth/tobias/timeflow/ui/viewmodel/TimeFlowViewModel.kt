@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import ch.wuerth.tobias.timeflow.data.TimeFlowItem
 import ch.wuerth.tobias.timeflow.data.TimeFlowRepository
+import ch.wuerth.tobias.timeflow.widget.StackedTimeFlowWidgetReceiver
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -32,19 +33,26 @@ class TimeFlowViewModel(
         )
         viewModelScope.launch {
             repository.insertTimeFlow(timeFlowItem)
+            updateWidgets()
         }
     }
 
     fun updateTimeFlow(timeFlowItem: TimeFlowItem) {
         viewModelScope.launch {
             repository.updateTimeFlow(timeFlowItem)
+            updateWidgets()
         }
     }
 
     fun deleteTimeFlow(timeFlowItem: TimeFlowItem) {
         viewModelScope.launch {
             repository.deleteTimeFlow(timeFlowItem)
+            updateWidgets()
         }
+    }
+
+    private fun updateWidgets() {
+        StackedTimeFlowWidgetReceiver.updateWidgets(getApplication())
     }
 
     class TimeFlowViewModelFactory(
