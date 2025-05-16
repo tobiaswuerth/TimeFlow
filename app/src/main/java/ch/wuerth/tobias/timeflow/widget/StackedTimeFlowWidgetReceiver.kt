@@ -69,7 +69,10 @@ class StackedTimeFlowWidgetReceiver : AppWidgetProvider() {
 
                     if (limitedTimeFlows.isEmpty()) {
                         val emptyView = RemoteViews(context.packageName, R.layout.timeflow_item)
-                        emptyView.setTextViewText(R.id.item_title, "No TimeFlows available")
+                        emptyView.setTextViewText(
+                            R.id.item_title,
+                            context.getString(R.string.no_timeflows_available)
+                        )
                         emptyView.setTextViewText(R.id.item_date, "")
                         emptyView.setTextViewText(R.id.item_percentage, "")
                         emptyView.setTextViewText(R.id.item_days_left, "")
@@ -89,7 +92,10 @@ class StackedTimeFlowWidgetReceiver : AppWidgetProvider() {
 
                 Handler(Looper.getMainLooper()).post {
                     val errorView = RemoteViews(context.packageName, R.layout.timeflow_item)
-                    errorView.setTextViewText(R.id.item_title, "Error loading TimeFlows")
+                    errorView.setTextViewText(
+                        R.id.item_title,
+                        context.getString(R.string.error_loading_timeflows)
+                    )
                     errorView.setTextViewText(R.id.item_date, "")
                     errorView.setTextViewText(R.id.item_percentage, "")
                     errorView.setTextViewText(R.id.item_days_left, "")

@@ -25,11 +25,6 @@ data class TimeFlowItem(
         return (elapsed.toFloat() / total).coerceIn(0f, 1f)
     }
 
-    fun isActive(): Boolean {
-        val now = Clock.System.now()
-        return now in fromDateTime..toDateTime
-    }
-
     fun isPast(): Boolean {
         return Clock.System.now() > toDateTime
     }

@@ -27,10 +27,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import ch.wuerth.tobias.timeflow.R
 import ch.wuerth.tobias.timeflow.data.TimeFlowItem
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
@@ -61,7 +63,6 @@ fun TimeFlowDialog(
 
     // Keep track of focused field to prevent auto-focusing title after date/time selection
     var focusedField by remember { mutableStateOf<String?>(null) }
-
     var showFromDatePicker by remember { mutableStateOf(false) }
     var showFromTimePicker by remember { mutableStateOf(false) }
     var showToDatePicker by remember { mutableStateOf(false) }
@@ -82,7 +83,9 @@ fun TimeFlowDialog(
                     .padding(16.dp)
             ) {
                 Text(
-                    text = if (timeFlowItem == null) "Add TimeFlow" else "Edit TimeFlow",
+                    text = if (timeFlowItem == null) stringResource(R.string.add_timeflow) else stringResource(
+                        R.string.edit_timeflow
+                    ),
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -91,7 +94,7 @@ fun TimeFlowDialog(
                 OutlinedTextField(
                     value = title,
                     onValueChange = { title = it },
-                    label = { Text("Title") },
+                    label = { Text(stringResource(R.string.title)) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .onFocusChanged { focusState ->
@@ -106,8 +109,8 @@ fun TimeFlowDialog(
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
-                // From Date & Time
-                Text(text = "From Date & Time")
+
+                Text(text = stringResource(R.string.from_date_time))
 
                 Button(
                     onClick = { showFromDatePicker = true },
@@ -123,8 +126,7 @@ fun TimeFlowDialog(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // To Date & Time
-                Text(text = "To Date & Time")
+                Text(text = stringResource(R.string.to_date_time))
 
                 Button(
                     onClick = { showToDatePicker = true },
@@ -144,7 +146,7 @@ fun TimeFlowDialog(
                     horizontalArrangement = Arrangement.End
                 ) {
                     TextButton(onClick = onDismiss) {
-                        Text("Cancel")
+                        Text(text = stringResource(R.string.cancel))
                     }
 
                     TextButton(
@@ -155,7 +157,7 @@ fun TimeFlowDialog(
                             }
                         }
                     ) {
-                        Text("Confirm")
+                        Text(stringResource(R.string.confirm))
                     }
                 }
             }

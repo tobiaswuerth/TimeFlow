@@ -1,14 +1,15 @@
 <resources>
     <string name="app_name">TimeFlow</string>
-    <string name="no_timeflows">No TimeFlows yet. Create one by tapping the + button!</string>
-    <string name="add_timeflow">Add TimeFlow</string>
-    <string name="edit_timeflow">Edit TimeFlow</string>
-    <string name="delete_timeflow">Delete TimeFlow</string>
-    <string name="timeflow_title">Title</string>
-    <string name="from_date">From Date</string>
-    <string name="to_date">To Date</string>
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
-    <string name="app_widget_description">Display your TimeFlow progress on the home screen</string>
     <string name="stacked_widget_description">Display all your TimeFlows in a compact stacked view</string>
+    <string name="no_timeflows_yet">No TimeFlows yet.\nCreate one by tapping the + button!</string>
+    <string name="add_timeflow">Add TimeFlow</string>
+    <string name="delete">Delete</string>
+    <string name="edit_timeflow">Edit TimeFlow</string>
+    <string name="from_date_time"><![CDATA[From Date & Time]]></string>
+    <string name="to_date_time"><![CDATA[To Date & Time]]></string>
+    <string name="title">Title</string>
+    <string name="no_timeflows_available">No TimeFlows available</string>
+    <string name="error_loading_timeflows">Error loading TimeFlows</string>
 </resources>
